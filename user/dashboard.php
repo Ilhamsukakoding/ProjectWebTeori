@@ -118,7 +118,7 @@ if (!is_user()) {
         Selamat datang, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>!
     </div>
 
-    <div class="alert alert-success rounded-3" style="background-color: #3a3a50; border: none;">
+    <div class="alert alert-success rounded-3 text-light" style="background-color: #3a3a50; border: none;">
         Anda login sebagai <strong>Karyawan</strong>.
     </div>
 

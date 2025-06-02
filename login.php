@@ -1,12 +1,10 @@
 <?php
 session_start();
 if (isset($_SESSION['username'])) {
-    header("Location: index.php"); // redirect ke index.php supaya diarahkan ke dashboard sesuai role
+    header("Location: index.php");
     exit;
 }
-
-require 'includes/config.php';  // gunakan require agar error kalau gagal load
-
+require 'includes/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -15,38 +13,81 @@ require 'includes/config.php';  // gunakan require agar error kalau gagal load
     <meta charset="UTF-8">
     <title>Login - Absensi Pekerjaan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .card {
+            background: rgba(30, 30, 50, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #444;
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+        .card-header h4 {
+            color: #0dcaf0;
+        }
+        .form-control {
+            background-color: #1f1f2e;
+            color: #fff;
+            border: 1px solid #444;
+        }
+        .form-control::placeholder {
+            color: #bbb;
+        }
+        .btn-primary {
+            background-color: #0dcaf0;
+            border: none;
+        }
+        .alert {
+            font-size: 0.9rem;
+        }
+        .card-footer {
+            color: #aaa;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card shadow">
-                    <div class="card-header text-center">
-                        <h4>Login</h4>
-                    </div>
-                    <div class="card-body">
-                        <?php if (isset($_GET['error'])): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars($_GET['error']) ?></div>
-                        <?php endif; ?>
-                        <form method="POST" action="login.php">
-                            <div class="mb-3">
-                                <label>Username</label>
-                                <input type="text" name="username" class="form-control" required autofocus>
-                            </div>
-                            <div class="mb-3">
-                                <label>Password</label>
-                                <input type="password" name="password" class="form-control" required>
-                            </div>
-                            <button type="submit" name="login" class="btn btn-primary w-100">Login</button>
-                        </form>
-                    </div>
-                    <div class="card-footer text-center small text-muted">
-                        © <?= date("Y") ?> Absensi Pekerjaan
-                    </div>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-header text-center">
+                    <h4><i class="bi bi-box-arrow-in-right"></i> Login</h4>
+                </div>
+                <div class="card-body">
+                    <?php if (isset($_GET['error'])): ?>
+                        <div class="alert alert-danger text-center"><?= htmlspecialchars($_GET['error']) ?></div>
+                    <?php endif; ?>
+                    <form method="POST" action="login.php">
+                        <div class="mb-3">
+                            <label>Username</label>
+                            <input type="text" name="username" class="form-control" required autofocus placeholder="Masukkan username">
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control" required placeholder="Masukkan password">
+                        </div>
+                        <button type="submit" name="login" class="btn btn-primary w-100">Masuk</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center small">
+                    © <?= date("Y") ?> Absensi Pekerjaan
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Optional: Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </body>
 </html>
 
@@ -62,17 +103,12 @@ if (isset($_POST['login'])) {
     $result = mysqli_stmt_get_result($stmt);
     $user = mysqli_fetch_assoc($result);
 
-    // Ganti cek password sesuai hash atau plain text
-    // Contoh kalau kamu pakai password_hash():
-    // if ($user && password_verify($password, $user['password'])) {
-    
-    // Kalau password masih plain text, ini pengecekan sederhana:
     if ($user && $password === $user['password']) {
         $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];      // simpan role
+        $_SESSION['role'] = $user['role'];
         $_SESSION['user_id'] = $user['id'];
 
-        header("Location: index.php");  // redirect ke index.php supaya diarahkan sesuai role
+        header("Location: index.php");
         exit;
     } else {
         header("Location: login.php?error=Username atau password salah!");
