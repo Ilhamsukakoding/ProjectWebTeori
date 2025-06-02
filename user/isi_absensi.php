@@ -164,8 +164,8 @@ if (isset($_POST['keluar']) && $data && $data['jam_keluar'] == null) {
                 </form>
             <?php else: ?>
                 <!-- Tampilkan jam masuk/keluar -->
-                <p><strong>Jam Masuk:</strong> <?= htmlspecialchars($data['jam_masuk']) ?? '-' ?></p>
-                <p><strong>Jam Keluar:</strong> <?= htmlspecialchars($data['jam_keluar']) ?? '-' ?></p>
+                <p><strong>Jam Masuk:</strong> <?= $data['jam_masuk'] ?? '-' ?></p>
+                <p><strong>Jam Keluar:</strong> <?= $data['jam_keluar'] ?? '-' ?></p>
                 <?php if (!$data['jam_keluar']): ?>
                     <!-- Form Absen Keluar -->
                     <form method="POST" id="formKeluar">
