@@ -13,57 +13,69 @@ if (!is_user()) {
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Karyawan - Absensi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1e1e2f;
-            color: #e0e0e0;
+            background-color: #f8fafc;
+            color: #333;
             margin: 0;
-            padding: 0;
         }
 
         .navbar {
-            background-color: #2c2c3c;
-            border-bottom: 1px solid #3a3a4d;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .navbar-brand {
             font-weight: 600;
-            color: #ffffff !important;
+            color: #0d6efd !important;
         }
 
-        .btn-outline-light {
-            border-color: #555;
-            color: #ccc;
+        .btn-outline-dark {
+            border-color: #ced4da;
+            color: #333;
         }
 
-        .btn-outline-light:hover {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
+        .btn-outline-dark:hover {
+            background-color: #0d6efd;
+            color: #fff;
+            border-color: #0d6efd;
         }
 
         .container {
             max-width: 1000px;
-            margin-top: 60px;
-            padding: 20px;
+            padding-top: 60px;
+            padding-bottom: 40px;
         }
 
         .welcome {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            color: #0d6efd;
+        }
+
+        .alert {
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
         }
 
         .grid-menu {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 20px;
+            margin-top: 30px;
         }
 
         .card-link {
@@ -72,28 +84,29 @@ if (!is_user()) {
         }
 
         .menu-card {
-            background-color: #2a2a3d;
+            background-color: #ffffff;
             padding: 30px;
             border-radius: 16px;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9ecef;
         }
 
         .menu-card:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 12px 24px rgba(59,130,246,0.4);
-            background-color: #31314a;
-        }
-
-        .menu-card h5 {
-            margin-top: 10px;
-            font-weight: 600;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(13, 110, 253, 0.15);
         }
 
         .menu-card span {
-            font-size: 2rem;
+            font-size: 2.5rem;
             display: block;
+            margin-bottom: 10px;
+        }
+
+        .menu-card h5 {
+            font-weight: 600;
+            margin: 0;
         }
 
         @media (max-width: 576px) {
@@ -104,11 +117,12 @@ if (!is_user()) {
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg">
+
+<nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
     <a class="navbar-brand" href="#">Absensi Karyawan</a>
     <div class="d-flex">
-        <a href="../logout.php" class="btn btn-outline-light btn-sm">Logout</a>
+        <a href="../logout.php" class="btn btn-outline-dark btn-sm">Logout</a>
     </div>
   </div>
 </nav>
@@ -118,11 +132,11 @@ if (!is_user()) {
         Selamat datang, <strong><?= htmlspecialchars($_SESSION['username']) ?></strong>!
     </div>
 
-    <div class="alert alert-success rounded-3 text-light" style="background-color: #3a3a50; border: none;">
+    <div class="alert alert-info">
         Anda login sebagai <strong>Karyawan</strong>.
     </div>
 
-    <div class="grid-menu mt-4">
+    <div class="grid-menu">
         <a href="isi_absensi.php" class="card-link">
             <div class="menu-card">
                 <span>📝</span>
@@ -137,5 +151,6 @@ if (!is_user()) {
         </a>
     </div>
 </div>
+
 </body>
 </html>
