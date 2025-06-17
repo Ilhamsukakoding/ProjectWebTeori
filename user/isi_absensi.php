@@ -157,9 +157,14 @@ if (isset($_POST['keluar']) && $data && $data['jam_keluar'] == null) {
                 <form method="POST" id="formMasuk">
                     <input type="hidden" name="jam_absen" id="jamMasukInput">
                     <div class="mb-3">
-                        <label for="keterangan" class="form-label">Keterangan (opsional)</label>
-                        <input type="text" name="keterangan" id="keterangan" class="form-control" placeholder="Contoh: WFH, Kantor, dll.">
+                        <label for="keterangan" class="form-label">Keterangan</label>
+                        <select name="keterangan" id="keterangan" class="form-control" required>
+                            <option value="" disabled selected>Pilih keterangan</option>
+                            <option value="Hadir">Hadir</option>
+                            <option value="Tidak Hadir">Tidak Hadir</option>
+                        </select>
                     </div>
+
                     <button type="submit" name="masuk" class="btn btn-success w-100">Absen Masuk</button>
                 </form>
             <?php else: ?>
