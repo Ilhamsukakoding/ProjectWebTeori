@@ -1,9 +1,11 @@
 <?php
+session_start(); // Letakkan di sini, paling atas!
+
 // includes/config.php
 define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root'); // Ganti dengan username database Anda
-define('DB_PASSWORD', '');     // Ganti dengan password database Anda
-define('DB_NAME', 'absensi_db'); // Nama database Anda
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'absensi_db');
 
 // Buat koneksi database
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
