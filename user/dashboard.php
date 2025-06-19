@@ -48,18 +48,17 @@ if ($result && $result->num_rows > 0) {
             margin: 0;
         }
 
-        /* --- Perbaikan CSS Navbar Dimulai --- */
         .navbar {
             background-color: #ffffff;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            padding: 0.3rem 0.8rem; /* Lebih kecil dari sebelumnya */
-            height: 90px; /* Menentukan tinggi tetap */
+            padding: 0.3rem 0.8rem; 
+            height: 90px; 
         }
 
         .navbar-brand {
             font-weight: 600;
             color: #0d6efd !important;
-            font-size: 1.05rem; /* Sedikit lebih kecil */
+            font-size: 1.05rem; 
             line-height: 1;
         }
 
@@ -67,8 +66,8 @@ if ($result && $result->num_rows > 0) {
             border-color: #ced4da;
             color: #333;
             font-weight: 500;
-            font-size: 0.8rem; /* Ukuran font lebih kecil */
-            padding: 0.25rem 0.6rem; /* Tombol lebih kecil */
+            font-size: 0.8rem; 
+            padding: 0.25rem 0.6rem; 
             height: 34px;
             display: flex;
             align-items: center;
