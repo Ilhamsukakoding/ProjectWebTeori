@@ -104,29 +104,35 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
        /* NAVBAR - versi ramping & cerah */
         .navbar {
             background-color: #ffffff;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
-            padding: 0.4rem 1rem; /* Lebih ramping */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 0.3rem 0.8rem; 
             height: 90px;
+            display: flex;
+            align-items: center;
         }
 
         .navbar-brand {
-        font-weight: 600;
-        color: #0d6efd !important;
-        font-size: 1rem;
-        line-height: 1;
-        padding: 0;
-        margin: 0;
+            font-weight: 600;
+            color: #0d6efd !important;
+            font-size: 1.1rem;
+            line-height: 1;
+            margin: 0;
+            padding-top: 0.2rem;
         }
 
+
+
         .btn-outline-dark {
-        font-size: 0.8rem;
-        font-weight: 500;
-        padding: 0.25rem 0.6rem;
-        height: 34px;
-        border-radius: 0.4rem;
-        border-color: #ced4da;
-        color: #333;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.4rem;
+            border-color: #ced4da;
+            color: #333;
+            display: flex;
+            align-items: center;
         }
+
 
         .btn-outline-dark:hover {
         background-color: #0d6efd;
@@ -136,7 +142,7 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
 
         .container {
             max-width: 1000px;
-            padding-top: 70px;
+            padding-top: 100px;
             padding-bottom: 40px;
         }
         h2 {
@@ -205,11 +211,12 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand" href="dashboard.php">Absensi Karyawan</a>
-        <a href="../logout.php" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1">
+        <a href="../logout.php" class="btn btn-outline-dark btn-sm">
             <i class="bi bi-box-arrow-right"></i> Logout
         </a>
     </div>
 </nav>
+
 
 
 <div class="container">
