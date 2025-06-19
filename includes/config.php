@@ -1,5 +1,7 @@
 <?php
-session_start(); // Letakkan di sini, paling atas!
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // includes/config.php
 define('DB_SERVER', 'localhost');

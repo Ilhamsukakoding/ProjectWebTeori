@@ -200,10 +200,21 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
             vertical-align: baseline;
             display: inline-block;
         }
+
         .small-text {
             font-size: 0.85em;
             color: #666;
         }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
     </style>
 </head>
 <body>
@@ -221,6 +232,10 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
 
 <div class="container">
     <h2><i class="bi bi-file-earmark-text"></i> Pengajuan Izin / Cuti</h2>
+
+    <a href="dashboard.php" class="btn btn-secondary btn-sm mb-4">
+        <i class="bi bi-arrow-left"></i> Kembali
+    </a>
 
     <?php if ($message): ?>
         <div class="alert alert-<?= $message_type ?> alert-dismissible fade show" role="alert">
@@ -328,6 +343,8 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
     </div>
 
 </div>
+
+<?php include '../includes/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

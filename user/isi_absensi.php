@@ -53,15 +53,27 @@ if (isset($_POST['keluar']) && $data && $data['jam_keluar'] == null) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
-            padding-top: 60px;
             color: #333;
+        }
+
+        main {
+            flex: 1;
         }
 
         .container {
             max-width: 600px;
+            padding-top: 60px;
         }
 
         h4 {
@@ -127,11 +139,20 @@ if (isset($_POST['keluar']) && $data && $data['jam_keluar'] == null) {
         .btn-secondary:hover {
             background-color: #5a6268;
         }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 1rem 0;
+            font-size: 0.9rem;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<main class="container">
     <h4>Absensi Hari Ini (<?= date('d-m-Y') ?>)</h4>
     <div class="mb-3">Jam sekarang: <span id="jamSekarang">--:--:--</span></div>
 
@@ -167,7 +188,7 @@ if (isset($_POST['keluar']) && $data && $data['jam_keluar'] == null) {
             <?php endif; ?>
         <?php endif; ?>
     </div>
-</div>
+</main>
 
 <!-- Jam Real-time -->
 <script>
@@ -190,6 +211,8 @@ if (isset($_POST['keluar']) && $data && $data['jam_keluar'] == null) {
     setInterval(updateJamInput, 1000);
     updateJamInput();
 </script>
+
+<?php include '../includes/footer.php'; ?>
 
 </body>
 </html>
