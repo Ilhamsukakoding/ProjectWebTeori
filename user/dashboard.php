@@ -294,12 +294,6 @@ $announcements = [
                 <h5>Pengajuan Izin/Cuti</h5>
             </div>
         </a>
-        <a href="profil.php" class="card-link">
-            <div class="menu-card">
-                <i class="bi bi-person-circle"></i>
-                <h5>Profil Saya</h5>
-            </div>
-        </a>
     </div>
 
     <?php if (!empty($announcements)): ?>
