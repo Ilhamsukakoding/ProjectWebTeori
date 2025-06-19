@@ -147,25 +147,31 @@ $admin_display_name = isset($_SESSION['nama_lengkap']) ? htmlspecialchars($_SESS
     <div class="alert alert-info mt-3">
         Anda login sebagai <strong class="text-info">Admin</strong>.
     </div>
-
-    <div class="grid-menu">
-        <a href="karyawan.php" class="card-link">
-            <div class="menu-card">
-                <i class="bi bi-person-lines-fill"></i>
-                <h5>Kelola Karyawan</h5>
-            </div>
-        </a>
-        <a href="absensi.php" class="card-link">
-            <div class="menu-card">
-                <i class="bi bi-calendar-check"></i>
-                <h5>Kelola Absensi</h5>
-            </div>
-        </a>
-        <a href="persetujuan_izin_cuti.php" class="card-link">
-            <div class="menu-card">
-                <i class="bi bi-file-earmark-check"></i> <h5>Persetujuan Izin/Cuti</h5>
-            </div>
-        </a>
+        <div class="grid-menu">
+            <a href="karyawan.php" class="card-link">
+                <div class="menu-card">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <h5>Kelola Karyawan</h5>
+                </div>
+            </a>
+            <a href="absensi.php" class="card-link">
+                <div class="menu-card">
+                    <i class="bi bi-calendar-check"></i>
+                    <h5>Kelola Absensi</h5>
+                </div>
+            </a>
+            <a href="persetujuan_izin_cuti.php" class="card-link">
+                <div class="menu-card">
+                    <i class="bi bi-file-earmark-check"></i>
+                    <h5>Persetujuan Izin/Cuti</h5>
+                </div>
+            </a>
+            <a href="kelola_pengumuman.php" class="card-link">
+                <div class="menu-card">
+                    <i class="bi bi-megaphone-fill"></i>
+                    <h5>Kelola Pengumuman</h5>
+                </div>
+            </a>
         </div>
 </div>
 

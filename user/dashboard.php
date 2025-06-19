@@ -19,11 +19,14 @@ $nama_karyawan = get_karyawan_name($user_id);
 
 $attendance_status = get_today_attendance_status($user_id);
 
-$announcements = [
-    "Jadwal Libur Nasional Idul Adha 2025: 16-17 Juni 2025.",
-    "Rapat bulanan divisi IT akan diadakan tanggal 25 Juni 2025 di ruang Rapat B.",
-    "Mohon untuk selalu melakukan absensi masuk dan pulang tepat waktu."
-];
+$announcements = [];
+$result = $conn->query("SELECT isi FROM pengumuman ORDER BY tanggal DESC");
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $announcements[] = $row['isi'];
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -216,6 +219,25 @@ $announcements = [
                 padding: 20px;
             }
         }
+
+        .announcement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .announcement-item {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #d0e7ff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+        }   
     </style>
 </head>
 <body>
@@ -299,11 +321,14 @@ $announcements = [
     <?php if (!empty($announcements)): ?>
     <div class="announcement-section">
         <h6><i class="bi bi-megaphone-fill"></i> Pengumuman Terbaru</h6>
-        <ul>
-            <?php foreach ($announcements as $announcement): ?>
-                <li><?= htmlspecialchars($announcement) ?></li>
-            <?php endforeach; ?>
-        </ul>
+            <div class="announcement-list">
+                <?php foreach ($announcements as $announcement): ?>
+                    <div class="announcement-item">
+                        <i class="bi bi-megaphone-fill text-primary me-2"></i>
+                        <?= nl2br(htmlspecialchars($announcement)) ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
     </div>
     <?php endif; ?>
 

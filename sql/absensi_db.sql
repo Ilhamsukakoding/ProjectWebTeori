@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jun 18, 2025 at 02:04 PM
--- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- Waktu pembuatan: 19 Jun 2025 pada 14.35
+-- Versi server: 8.0.30
+-- Versi PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `absensi`
+-- Struktur dari tabel `absensi`
 --
 
 CREATE TABLE `absensi` (
@@ -33,12 +33,12 @@ CREATE TABLE `absensi` (
   `tanggal` date NOT NULL,
   `jam_masuk` time DEFAULT NULL,
   `jam_keluar` time DEFAULT NULL,
-  `keterangan` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `keterangan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `absensi`
+-- Dumping data untuk tabel `absensi`
 --
 
 INSERT INTO `absensi` (`id`, `user_id`, `tanggal`, `jam_masuk`, `jam_keluar`, `keterangan`, `created_at`) VALUES
@@ -51,30 +51,30 @@ INSERT INTO `absensi` (`id`, `user_id`, `tanggal`, `jam_masuk`, `jam_keluar`, `k
 -- --------------------------------------------------------
 
 --
--- Table structure for table `karyawan`
+-- Struktur dari tabel `karyawan`
 --
 
 CREATE TABLE `karyawan` (
   `id` int NOT NULL,
-  `nama` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `jabatan` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `jabatan` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `karyawan`
+-- Dumping data untuk tabel `karyawan`
 --
 
 INSERT INTO `karyawan` (`id`, `nama`, `jabatan`, `email`, `created_at`) VALUES
 (4, 'ilham', 'IT staff', 'ilhamkurniawannn12@gmail.com', '2025-05-31 12:44:21'),
 (5, 'adyatma', 'Kepala Divisi IT', 'adyatma03@gmail.com', '2025-05-31 12:45:06'),
-(6, 'wibi', 'IT staff', 'wibihegi02@gmail.com', '2025-05-31 12:45:31');
+(10, 'wibi', 'IT staff', 'wibi@gmail.com', '2025-06-19 14:12:16');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pengajuan_izin_cuti`
+-- Struktur dari tabel `pengajuan_izin_cuti`
 --
 
 CREATE TABLE `pengajuan_izin_cuti` (
@@ -93,7 +93,7 @@ CREATE TABLE `pengajuan_izin_cuti` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `pengajuan_izin_cuti`
+-- Dumping data untuk tabel `pengajuan_izin_cuti`
 --
 
 INSERT INTO `pengajuan_izin_cuti` (`id`, `user_id`, `jenis_pengajuan`, `tanggal_mulai`, `tanggal_akhir`, `alasan`, `dokumen_pendukung`, `status`, `tanggal_pengajuan`, `disetujui_oleh`, `tanggal_persetujuan`, `catatan_admin`) VALUES
@@ -103,91 +103,123 @@ INSERT INTO `pengajuan_izin_cuti` (`id`, `user_id`, `jenis_pengajuan`, `tanggal_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `pengumuman`
+--
+
+CREATE TABLE `pengumuman` (
+  `id` int NOT NULL,
+  `isi` text NOT NULL,
+  `tanggal` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data untuk tabel `pengumuman`
+--
+
+INSERT INTO `pengumuman` (`id`, `isi`, `tanggal`) VALUES
+(1, 'Jadwal Libur Nasional Idul Adha 2025: 16-17 Juni 2025,\r\nRapat bulanan divisi IT akan diadakan tanggal 25 Juni 2025 di ruang Rapat B,\r\nMohon untuk selalu melakukan absensi masuk dan pulang tepat waktu.', '2025-06-19 14:33:44');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
   `id` int NOT NULL,
-  `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `nama` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `role` enum('admin','user') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','user') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `nama`, `role`, `created_at`) VALUES
 (1, 'admin', 'admin123', 'Administrator', 'admin', '2025-05-31 10:38:06'),
 (7, 'ilham', '123456', 'ilham', 'user', '2025-05-31 12:44:21'),
-(8, 'adyatma', '123456', 'adyatma', 'user', '2025-05-31 12:45:06');
+(8, 'adyatma', '123456', 'adyatma', 'user', '2025-05-31 12:45:06'),
+(12, 'wibi', '123456', 'wibi', 'user', '2025-06-19 14:12:16');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `absensi`
+-- Indeks untuk tabel `absensi`
 --
 ALTER TABLE `absensi`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `karyawan`
+-- Indeks untuk tabel `karyawan`
 --
 ALTER TABLE `karyawan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pengajuan_izin_cuti`
+-- Indeks untuk tabel `pengajuan_izin_cuti`
 --
 ALTER TABLE `pengajuan_izin_cuti`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `pengumuman`
+--
+ALTER TABLE `pengumuman`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `absensi`
+-- AUTO_INCREMENT untuk tabel `absensi`
 --
 ALTER TABLE `absensi`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `karyawan`
+-- AUTO_INCREMENT untuk tabel `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `pengajuan_izin_cuti`
+-- AUTO_INCREMENT untuk tabel `pengajuan_izin_cuti`
 --
 ALTER TABLE `pengajuan_izin_cuti`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `pengumuman`
+--
+ALTER TABLE `pengumuman`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `pengajuan_izin_cuti`
+-- Ketidakleluasaan untuk tabel `pengajuan_izin_cuti`
 --
 ALTER TABLE `pengajuan_izin_cuti`
   ADD CONSTRAINT `pengajuan_izin_cuti_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `karyawan` (`id`) ON DELETE CASCADE;
