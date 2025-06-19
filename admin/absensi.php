@@ -37,58 +37,70 @@ if (isset($_GET['hapus'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background-color: #0f1117;
-            color: #f1f1f1;
+            background-color: #f8fafc;
             font-family: 'Segoe UI', sans-serif;
+            color: #333;
+            padding: 30px 0;
         }
+
         .container {
-            margin-top: 40px;
+            max-width: 1000px;
         }
+
         .btn, .form-control {
-            border-radius: 10px;
+            border-radius: 0.5rem;
         }
-        .table {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .table-dark {
-            background-color: #1f1f2e;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #2c2c3a;
-        }
+
         .btn-primary {
-            background-color: #0dcaf0;
-            border-color: #0dcaf0;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
         }
+
         .btn-outline-secondary {
-            color: #ccc;
-            border-color: #444;
+            color: #6c757d;
+            border-color: #ced4da;
         }
+
         .btn-danger {
-            background-color: #e74c3c;
-            border-color: #e74c3c;
+            border-radius: 0.5rem;
         }
-        .table-bordered td, .table-bordered th {
-            border-color: #333;
+
+        .card {
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            background-color: #ffffff;
         }
+
+        .table thead {
+            background-color: #e9f2ff;
+            color: #0d6efd;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
         input[type="date"] {
-            background-color: #1e1e2f;
-            color: #fff;
-            border-color: #333;
+            border-radius: 0.5rem;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h3 class="mb-4"><i class="bi bi-calendar-check text-info"></i> Data Absensi Pengguna</h3>
+    <div class="mb-4 text-center">
+        <h4 class="fw-bold text-primary"><i class="bi bi-calendar-check"></i> Data Absensi Pengguna</h4>
+        <p class="text-muted">Kelola dan pantau kehadiran karyawan</p>
+    </div>
 
-    <a href="dashboard.php" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left"></i> Kembali</a>
+    <div class="mb-3">
+        <a href="dashboard.php" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Kembali</a>
+    </div>
 
-    <form method="GET" class="row g-2 align-items-center mb-4">
+    <form method="GET" class="row g-2 align-items-end mb-4">
         <div class="col-auto">
-            <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal_filter) ?>" class="form-control text-light">
+            <label class="form-label mb-0">Filter Tanggal</label>
+            <input type="date" name="tanggal" value="<?= htmlspecialchars($tanggal_filter) ?>" class="form-control">
         </div>
         <div class="col-auto">
             <button class="btn btn-primary"><i class="bi bi-funnel"></i> Filter</button>
@@ -96,40 +108,42 @@ if (isset($_GET['hapus'])) {
         </div>
     </form>
 
-    <div class="table-responsive">
-        <table class="table table-dark table-bordered table-hover align-middle text-center">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Username</th>
-                    <th>Tanggal</th>
-                    <th>Jam Masuk</th>
-                    <th>Jam Keluar</th>
-                    <th>Keterangan</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            $no = 1;
-            while ($row = mysqli_fetch_assoc($result)):
-            ?>
-                <tr>
-                    <td><?= $no++ ?></td>
-                    <td><?= htmlspecialchars($row['username']) ?></td>
-                    <td><?= $row['tanggal'] ?></td>
-                    <td><?= $row['jam_masuk'] ?></td>
-                    <td><?= $row['jam_keluar'] ?></td>
-                    <td><?= htmlspecialchars($row['keterangan']) ?></td>
-                    <td>
-                        <a href="absensi.php?hapus=<?= $row['id'] ?>" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Username</th>
+                        <th>Tanggal</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Keluar</th>
+                        <th>Keterangan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                $no = 1;
+                while ($row = mysqli_fetch_assoc($result)):
+                ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= htmlspecialchars($row['username']) ?></td>
+                        <td><?= $row['tanggal'] ?></td>
+                        <td><?= $row['jam_masuk'] ?></td>
+                        <td><?= $row['jam_keluar'] ?></td>
+                        <td><?= htmlspecialchars($row['keterangan']) ?></td>
+                        <td>
+                            <a href="absensi.php?hapus=<?= $row['id'] ?>" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

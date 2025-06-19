@@ -7,7 +7,6 @@ if (!is_admin()) {
     exit;
 }
 
-// Tambah karyawan
 if (isset($_POST['tambah'])) {
     $nama = trim($_POST['nama']);
     $jabatan = trim($_POST['jabatan']);
@@ -31,7 +30,6 @@ if (isset($_POST['tambah'])) {
     exit;
 }
 
-// Hapus karyawan
 if (isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
     mysqli_query($conn, "DELETE FROM karyawan WHERE id = $id");
@@ -49,67 +47,77 @@ if (isset($_GET['hapus'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            background-color: #0f1117;
-            color: #f1f1f1;
+            background-color: #f8fafc;
             font-family: 'Segoe UI', sans-serif;
+            color: #333;
+            padding: 30px 0;
         }
+
         .container {
-            margin-top: 40px;
+            max-width: 1000px;
         }
+
         .card {
-            background-color: #1e1e2f;
-            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            background-color: #ffffff;
         }
+
         .card-header {
-            background-color: #2c2c3a;
-            color: #fff;
-            font-weight: bold;
+            background-color: #e9f2ff;
+            color: #0d6efd;
+            font-weight: 600;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
         }
+
         .form-control, .btn {
-            border-radius: 10px;
+            border-radius: 0.5rem;
         }
-        .form-control {
-            background-color: #1e1e2f;
-            color: #fff;
-            border-color: #333;
-        }
-        .form-control::placeholder {
-            color: #bbb;
-        }
+
         .btn-primary {
-            background-color: #0dcaf0;
-            border-color: #0dcaf0;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
         }
+
+        .btn-outline-secondary {
+            color: #6c757d;
+            border-color: #ced4da;
+        }
+
         .btn-danger {
             background-color: #e74c3c;
             border-color: #e74c3c;
+            border-radius: 0.5rem;
         }
-        .btn-outline-secondary {
-            color: #ccc;
-            border-color: #444;
+
+        .table thead {
+            background-color: #e9f2ff;
+            color: #0d6efd;
         }
-        .table {
-            background-color: #1f1f2e;
-            color: #fff;
+
+        .table td, .table th {
+            vertical-align: middle;
         }
-        .table-dark {
-            background-color: #2c2c3a;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #343447;
-        }
-        .table-bordered td, .table-bordered th {
-            border-color: #444;
+
+        .form-control::placeholder {
+            color: #999;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h3 class="mb-4"><i class="bi bi-person-badge text-info"></i> Data Karyawan</h3>
-    <a href="dashboard.php" class="btn btn-outline-secondary btn-sm mb-3"><i class="bi bi-arrow-left"></i> Kembali</a>
+    <div class="mb-4 text-center">
+        <h4 class="fw-bold text-primary"><i class="bi bi-person-badge"></i> Data Karyawan</h4>
+        <p class="text-muted">Kelola daftar karyawan dan informasi dasar mereka</p>
+    </div>
 
-    <!-- Form Tambah -->
+    <div class="mb-3">
+        <a href="dashboard.php" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left"></i> Kembali</a>
+    </div>
+
+    <!-- Form Tambah Karyawan -->
     <div class="card mb-4">
         <div class="card-header"><i class="bi bi-person-plus"></i> Tambah Karyawan</div>
         <div class="card-body">
@@ -133,37 +141,39 @@ if (isset($_GET['hapus'])) {
     </div>
 
     <!-- Tabel Karyawan -->
-    <div class="table-responsive">
-        <table class="table table-dark table-bordered table-hover align-middle text-center">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama</th>
-                    <th>Jabatan</th>
-                    <th>Email</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            $result = mysqli_query($conn, "SELECT * FROM karyawan ORDER BY id DESC");
-            $no = 1;
-            while ($row = mysqli_fetch_assoc($result)):
-            ?>
-                <tr>
-                    <td><?= $no++ ?></td>
-                    <td><?= htmlspecialchars($row['nama']) ?></td>
-                    <td><?= htmlspecialchars($row['jabatan']) ?></td>
-                    <td><?= htmlspecialchars($row['email']) ?></td>
-                    <td>
-                        <a href="karyawan.php?hapus=<?= $row['id'] ?>" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Email</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                $result = mysqli_query($conn, "SELECT * FROM karyawan ORDER BY id DESC");
+                $no = 1;
+                while ($row = mysqli_fetch_assoc($result)):
+                ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= htmlspecialchars($row['nama']) ?></td>
+                        <td><?= htmlspecialchars($row['jabatan']) ?></td>
+                        <td><?= htmlspecialchars($row['email']) ?></td>
+                        <td>
+                            <a href="karyawan.php?hapus=<?= $row['id'] ?>" onclick="return confirm('Yakin hapus data ini?')" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

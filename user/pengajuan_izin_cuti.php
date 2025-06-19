@@ -101,29 +101,39 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
             color: #333;
             margin: 0;
         }
-       .navbar {
+       /* NAVBAR - versi ramping & cerah */
+        .navbar {
             background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            padding: 0.5rem 1rem; /* Mengurangi padding secara signifikan */
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+            padding: 0.4rem 1rem; /* Lebih ramping */
+            height: 90px;
         }
 
         .navbar-brand {
-            font-weight: 700;
-            color: #0d6efd !important;
-            font-size: 1.25rem; /* Mengurangi ukuran font brand */
+        font-weight: 600;
+        color: #0d6efd !important;
+        font-size: 1rem;
+        line-height: 1;
+        padding: 0;
+        margin: 0;
         }
+
         .btn-outline-dark {
-            border-color: #ced4da;
-            color: #333;
-            font-weight: 500;
-            font-size: 0.9rem;
-            padding: 0.375rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 0.25rem 0.6rem;
+        height: 34px;
+        border-radius: 0.4rem;
+        border-color: #ced4da;
+        color: #333;
         }
+
         .btn-outline-dark:hover {
-            background-color: #0d6efd;
-            color: #fff;
-            border-color: #0d6efd;
+        background-color: #0d6efd;
+        color: #fff;
+        border-color: #0d6efd;
         }
+
         .container {
             max-width: 1000px;
             padding-top: 70px;
@@ -193,15 +203,14 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
 <body>
 
 <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
+    <div class="container d-flex justify-content-between align-items-center">
         <a class="navbar-brand" href="dashboard.php">Absensi Karyawan</a>
-        <div class="d-flex">
-            <a href="../logout.php" class="btn btn-outline-dark btn-sm">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
-        </div>
+        <a href="../logout.php" class="btn btn-outline-dark btn-sm d-flex align-items-center gap-1">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
     </div>
 </nav>
+
 
 <div class="container">
     <h2><i class="bi bi-file-earmark-text"></i> Pengajuan Izin / Cuti</h2>

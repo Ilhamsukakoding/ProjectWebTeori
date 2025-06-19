@@ -49,35 +49,35 @@ $announcements = [
         .navbar {
             background-color: #ffffff;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            padding: 0.5rem 1rem; /* Mengurangi padding secara signifikan */
+            padding: 0.3rem 0.8rem; /* Lebih kecil dari sebelumnya */
+            height: 90px; /* Menentukan tinggi tetap */
         }
 
         .navbar-brand {
-            font-weight: 700;
+            font-weight: 600;
             color: #0d6efd !important;
-            font-size: 1.25rem; /* Mengurangi ukuran font brand */
+            font-size: 1.05rem; /* Sedikit lebih kecil */
+            line-height: 1;
         }
 
         .btn-outline-dark {
             border-color: #ced4da;
             color: #333;
             font-weight: 500;
-            font-size: 0.9rem; /* Ukuran font tombol lebih kecil */
-            padding: 0.375rem 0.75rem; /* Padding tombol lebih kecil */
-        }
-
-        .btn-outline-dark:hover {
-            background-color: #0d6efd;
-            color: #fff;
-            border-color: #0d6efd;
-        }
-
-        .container {
-            max-width: 1000px;
-            padding-top: 70px; /* Sesuaikan dengan tinggi navbar yang baru, sedikit lebih kecil dari sebelumnya */
-            padding-bottom: 40px;
+            font-size: 0.8rem; /* Ukuran font lebih kecil */
+            padding: 0.25rem 0.6rem; /* Tombol lebih kecil */
+            height: 34px;
+            display: flex;
+            align-items: center;
         }
         /* --- Perbaikan CSS Navbar Selesai --- */
+
+        /* Sesuaikan dengan tinggi navbar baru */
+        .container {
+            max-width: 1000px;
+            padding-top: 70px; /* Tetap cukup untuk menghindari tumpang tindih */
+            padding-bottom: 40px;
+        }
 
 
         .welcome {
