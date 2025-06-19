@@ -72,9 +72,8 @@ if ($result && $result->num_rows > 0) {
             display: flex;
             align-items: center;
         }
-        /* --- Perbaikan CSS Navbar Selesai --- */
+        
 
-        /* Sesuaikan dengan tinggi navbar baru */
         .container {
             max-width: 1000px;
             padding-top: 70px; /* Tetap cukup untuk menghindari tumpang tindih */
