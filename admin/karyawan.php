@@ -2,9 +2,9 @@
 // admin/karyawan.php
 require '../includes/config.php';
 require '../includes/auth.php';
-require '../includes/function.php'; // Diperlukan untuk get_user_details
+require '../includes/function.php'; 
 
-// === PENTING: Mengontrol Cache Browser ===
+// === Mengontrol Cache Browser ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -25,9 +25,9 @@ if (isset($_POST['tambah'])) {
     $email = trim($_POST['email'] ?? '');
 
     if ($nama !== "") {
-        $username = strtolower(str_replace(' ', '', $nama)); // Buat username dari nama
-        $default_password = '123456'; // Ganti dengan password_hash() untuk keamanan!
-        $role = 'user'; // Karyawan baru selalu role 'user'
+        $username = strtolower(str_replace(' ', '', $nama)); 
+        $default_password = '123456'; 
+        $role = 'user'; 
 
         // Cek apakah username atau email sudah ada
         $stmt_check = $conn->prepare("SELECT COUNT(*) FROM user WHERE username = ? OR email = ?");

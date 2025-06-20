@@ -1,15 +1,11 @@
 <?php
-// user/dashboard.php
-// Pastikan session_start() ada di includes/config.php di baris PALING ATAS
 require '../includes/config.php';
 require '../includes/auth.php';
-require '../includes/function.php'; // <-- PASTIKAN BARIS INI ADA DAN TIDAK DIKOMENTARI
+require '../includes/function.php'; 
 
-// === PENTING: Mengontrol Cache Browser ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-// ==========================================
 
 if (!is_user()) {
     header("Location: ../login.php");
@@ -22,15 +18,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-// PERBAIKAN PENTING: Menambahkan titik koma (;) di akhir baris ini
-$user_details = get_user_details($user_id); // <-- TITIK KOMA DITAMBAHKAN DI SINI
-$nama_karyawan = $user_details['nama']; // Sekarang $user_details akan terdefinisi dengan benar
+$user_details = get_user_details($user_id); 
+$nama_karyawan = $user_details['nama']; 
 
 $attendance_status = get_today_attendance_status($user_id);
 
 // Ambil pengumuman dari database
 $announcements = [];
-// Pastikan $conn digunakan untuk query ke tabel 'pengumuman'
 $result_pengumuman = $conn->query("SELECT isi FROM pengumuman ORDER BY tanggal DESC");
 if ($result_pengumuman && $result_pengumuman->num_rows > 0) {
     while ($row = $result_pengumuman->fetch_assoc()) {

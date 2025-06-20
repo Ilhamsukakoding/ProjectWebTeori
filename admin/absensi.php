@@ -3,7 +3,7 @@
 require '../includes/config.php';
 require '../includes/auth.php';
 
-// === PENTING: Mengontrol Cache Browser ===
+// === Mengontrol Cache Browser ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -47,7 +47,6 @@ if (isset($_GET['msg']) && isset($_GET['type'])) {
 }
 
 // Query untuk mengambil data absensi dengan JOIN ke tabel 'user' yang baru
-// PASTIKAN TIDAK ADA KARAKTER TAMBAHAN ATAU KOMENTAR DI DALAM STRING QUERY INI
 $query = "
     SELECT 
         absensi.*, 
@@ -56,7 +55,7 @@ $query = "
     FROM 
         absensi 
     LEFT JOIN 
-        user ON absensi.user_id = user.id"; // Baris 58 Anda mungkin ada di sini atau sekitarnya
+        user ON absensi.user_id = user.id"; 
 
 $params = [];
 $types = '';

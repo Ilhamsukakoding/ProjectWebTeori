@@ -1,14 +1,9 @@
 <?php
-// login.php
+require 'includes/config.php'; 
 
-// PENTING: session_start() harus ada di includes/config.php di baris PALING ATAS
-require 'includes/config.php'; // Memastikan koneksi $conn dan session_start() sudah aktif
-
-// === PENTING: Mengontrol Cache Browser agar tidak bisa 'kembali' ke halaman login ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-// =================================================================================
 
 // Cek apakah user sudah login. Jika sudah, arahkan ke dashboard yang sesuai
 if (isset($_SESSION['username'])) {
@@ -22,17 +17,15 @@ if (isset($_SESSION['username'])) {
         }
     }
     // Fallback jika role tidak ditemukan atau tidak sesuai, mungkin ke dashboard default atau logout
-    header("Location: index.php"); // Atau Anda bisa redirect ke logout.php
+    header("Location: index.php"); 
     exit;
 }
 
 // Logika pemrosesan form login setelah POST request
 if (isset($_POST['login'])) {
-    $username = trim($_POST['username'] ?? ''); // Perbaikan deprecated trim()
-    $password = trim($_POST['password'] ?? ''); // Perbaikan deprecated trim()
+    $username = trim($_POST['username'] ?? ''); 
+    $password = trim($_POST['password'] ?? ''); 
 
-    // Query untuk mencari user di tabel 'user' (yang kini sudah digabung)
-    // Sekarang hanya perlu query ke satu tabel: `user`
     $query_user = "SELECT id, username, password, nama, jabatan, email, role FROM user WHERE username = ?";
     $stmt_user = mysqli_prepare($conn, $query_user);
     
@@ -47,16 +40,16 @@ if (isset($_POST['login'])) {
     $user = mysqli_fetch_assoc($result_user);
     mysqli_stmt_close($stmt_user);
 
-    // Verifikasi password (idealnya gunakan password_verify() untuk hashed password)
+    // Verifikasi password 
     if ($user && $password === $user['password']) { 
         // Login berhasil
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-        $_SESSION['user_id'] = $user['id']; // user.id kini adalah ID tunggal
+        $_SESSION['user_id'] = $user['id']; 
         $_SESSION['nama_lengkap'] = $user['nama'];
-        $_SESSION['jabatan'] = $user['jabatan']; // Simpan juga jabatan ke sesi
-        $_SESSION['email'] = $user['email'];     // Simpan juga email ke sesi
+        $_SESSION['jabatan'] = $user['jabatan']; 
+        $_SESSION['email'] = $user['email'];     
 
         // Redirect sesuai role
         if ($_SESSION['role'] === 'admin') {

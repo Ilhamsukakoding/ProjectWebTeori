@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Fungsi cek role (contoh, sesuaikan dengan implementasi kamu di includes/auth.php)
+// Fungsi cek role 
 function is_admin() {
     return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }

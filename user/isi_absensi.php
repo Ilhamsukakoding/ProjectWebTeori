@@ -1,15 +1,11 @@
 <?php
-// user/isi_absensi.php
-// Pastikan session_start() ada di includes/config.php di baris PALING ATAS
 require '../includes/config.php';
 require '../includes/auth.php';
 require '../includes/function.php';
 
-// === PENTING: Mengontrol Cache Browser ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-// ==========================================
 
 if (!is_user()) {
     header("Location: ../login.php");
@@ -21,7 +17,6 @@ $tanggal_hari_ini = date('Y-m-d');
 $message = '';
 $message_type = '';
 
-// Menggunakan fungsi get_today_attendance_status dari function.php untuk konsistensi
 $attendance_status = get_today_attendance_status($user_id);
 $data = null;
 if ($attendance_status['status'] === 'masuk' || $attendance_status['status'] === 'pulang') {

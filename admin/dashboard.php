@@ -5,11 +5,10 @@ require '../includes/config.php';
 require '../includes/auth.php';
 require '../includes/function.php';
 
-// === PENTING: Mengontrol Cache Browser ===
+// === Mengontrol Cache Browser ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-// ==========================================
 
 if (!is_admin()) {
     header("Location: ../login.php");

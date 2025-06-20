@@ -1,15 +1,11 @@
 <?php
-// user/pengajuan_izin_cuti.php
-// Pastikan session_start() ada di includes/config.php di baris PALING ATAS
 require '../includes/config.php';
 require '../includes/auth.php';
 require '../includes/function.php';
 
-// === PENTING: Mengontrol Cache Browser ===
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-// ==========================================
 
 if (!is_user()) {
     header("Location: ../login.php");
@@ -22,13 +18,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$user_details = get_user_details($user_id); // Mengambil detail user dari tabel 'user' baru
-$nama_karyawan = $user_details['nama']; // Untuk display (jika dibutuhkan, tapi di sini tidak digunakan langsung)
+$user_details = get_user_details($user_id); 
+$nama_karyawan = $user_details['nama']; 
 
 $message = '';
 $message_type = '';
 
-// Ambil pesan dari URL jika ada (setelah redirect dari proses POST)
 if (isset($_GET['msg']) && isset($_GET['type'])) {
     $message = htmlspecialchars($_GET['msg']);
     $message_type = htmlspecialchars($_GET['type']);
@@ -38,10 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jenis_pengajuan = $_POST['jenis_pengajuan'] ?? '';
     $tanggal_mulai = $_POST['tanggal_mulai'] ?? '';
     $tanggal_akhir = $_POST['tanggal_akhir'] ?? '';
-    $alasan = trim($_POST['alasan'] ?? ''); // Perbaikan deprecated trim()
+    $alasan = trim($_POST['alasan'] ?? ''); 
     $dokumen_pendukung = null;
 
-    // Validasi input
     if (empty($jenis_pengajuan) || empty($tanggal_mulai) || empty($tanggal_akhir) || empty($alasan)) {
         $message = "Semua kolom wajib diisi kecuali dokumen pendukung.";
         $message_type = "danger";
@@ -53,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_FILES['dokumen_pendukung']) && $_FILES['dokumen_pendukung']['error'] == 0) {
             $allowed_types = ['application/pdf', 'image/jpeg', 'image/png'];
             $max_size = 5 * 1024 * 1024; // 5 MB
-            $upload_dir = '../uploads/izin_cuti/'; // Pastikan folder ini ada dan writable!
+            $upload_dir = '../uploads/izin_cuti/'; 
             
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0777, true);

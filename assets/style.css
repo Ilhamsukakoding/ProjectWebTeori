@@ -8,30 +8,28 @@ body {
 }
 
 body {
-  font-family: "Inter", sans-serif; /* Menggunakan Google Font Inter */
-  background-color: #f8fafc; /* Latar belakang cerah */
-  color: #333; /* Warna teks gelap default */
+  font-family: "Inter", sans-serif; 
+  background-color: #f8fafc; 
+  color: #333; 
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Memastikan body memenuhi viewport tinggi */
+  min-height: 100vh; 
 }
 
-/* Navbar (fixed-top for dashboard) */
 .navbar {
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 0.25rem 1rem; /* Padding yang lebih ringkas */
-  min-height: 50px; /* Tinggi minimum navbar */
-  z-index: 1000; /* Pastikan di atas konten lain */
+  padding: 0.25rem 1rem; 
+  min-height: 50px; 
+  z-index: 1000; 
 }
 
 .navbar-brand {
   font-weight: 700;
   color: #0d6efd !important;
-  font-size: 1.15rem; /* Ukuran font brand/logo */
+  font-size: 1.15rem; 
 }
 
-/* Logout Button on Navbar */
 .btn-outline-dark {
   border-color: #ced4da;
   color: #333;
@@ -49,10 +47,9 @@ body {
   border-color: #0d6efd;
 }
 
-/* Admin Navbar (using btn-outline-info as placeholder for dark theme) */
 .btn-outline-info {
   border-color: #ced4da;
-  color: #333; /* Default text color, will be overridden by theme */
+  color: #333; 
   font-weight: 500;
   font-size: 0.85rem;
   padding: 0.2rem 0.6rem;
@@ -66,65 +63,58 @@ body {
   border-color: #0d6efd;
 }
 
-/* Admin Dashboard Specific Styles (from admin/dashboard.php original) */
 .navbar-dark .navbar-brand {
-  /* This was for a dark navbar, removed for consistency */
-  color: #0d6efd !important; /* Keep primary color */
+  color: #0d6efd !important; 
 }
 .navbar-dark .btn-outline-info {
-  /* This was for a dark navbar, removed for consistency */
-  border-color: #0d6efd; /* Consistent blue */
+  border-color: #0d6efd; 
   color: #0d6efd;
 }
 .navbar-dark .btn-outline-info:hover {
-  /* Consistent blue */
   background-color: #0d6efd;
   color: #fff;
 }
 
-/* Main Container & Page Headers */
+
 main {
-  flex: 1; /* Konten utama mengambil ruang sisa */
-  padding-top: 58px; /* Padding untuk fixed navbar */
-  padding-bottom: 40px; /* Padding bawah konten */
+  flex: 1;
+  padding-top: 58px; 
+  padding-bottom: 40px; 
 }
 
 .container {
-  max-width: 1000px; /* Lebar default container */
-  flex-grow: 1; /* Agar container di dalam body flex mengisi ruang */
+  max-width: 1000px; 
+  flex-grow: 1; 
 }
 
-/* Specific for Admin Pages wider container */
 .container.admin-wide {
-  max-width: 1200px; /* Untuk admin absensi dan persetujuan */
+  max-width: 1200px; 
 }
 
-/* Common Page Header */
 .page-header {
   margin-bottom: 30px;
   text-align: center;
 }
 .page-header h4 {
   font-weight: 700;
-  color: #0d6efd; /* Warna primary Bootstrap */
+  color: #0d6efd; 
   display: inline-flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 5px;
 }
 .page-header p {
-  color: #6c757d; /* Warna muted Bootstrap */
+  color: #6c757d; 
   margin-bottom: 0;
 }
 .page-header .tanggal-info {
-  /* Styling untuk tanggal di header isi_absensi */
   font-size: 1rem;
   color: #555;
   margin-top: -10px;
   font-weight: 600;
 }
 
-/* Welcome Text (User Dashboard) */
+
 .welcome {
   font-size: 1.8rem;
   font-weight: 700;
@@ -135,13 +125,12 @@ main {
   color: #0d6efd;
 }
 
-/* Alerts */
 .alert {
   border-radius: 0.5rem;
   font-size: 0.95rem;
-  margin-bottom: 25px; /* Jarak bawah default untuk alert */
+  margin-bottom: 25px; 
 }
-/* Specific info alert (user dashboard/absensi status) */
+
 .alert-info {
   background-color: #e9f5ff;
   color: #0d6efd;
@@ -149,7 +138,7 @@ main {
   font-weight: 500;
 }
 
-/* Info Card (User Dashboard) */
+
 .info-card {
   background-color: #ffffff;
   border-radius: 12px;
@@ -175,7 +164,6 @@ main {
   color: #555;
 }
 
-/* Grid Menu (User & Admin Dashboards) */
 .grid-menu {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -217,7 +205,6 @@ main {
   color: #333;
 }
 
-/* Announcement Section (User Dashboard) */
 .announcement-section {
   background-color: #e9f5ff;
   border-left: 5px solid #0d6efd;
@@ -238,7 +225,6 @@ main {
   font-size: 1.1rem;
 }
 .announcement-section ul {
-  /* Removed for individual announcement-item */
   list-style: none;
   padding-left: 0;
   margin-bottom: 0;
@@ -260,13 +246,12 @@ main {
   margin-bottom: 0;
 }
 
-/* Common Card Styling (used across many pages) */
 .card {
   border-radius: 1rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   background-color: #ffffff;
   border: none;
-  margin-bottom: 20px; /* Default margin-bottom for cards */
+  margin-bottom: 20px; 
 }
 .card-header {
   background-color: #e9f2ff;
@@ -276,7 +261,7 @@ main {
   border-top-right-radius: 1rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #d0e4ff;
-  display: flex; /* For header with icons */
+  display: flex; 
   align-items: center;
   gap: 10px;
 }
@@ -285,7 +270,6 @@ main {
   color: #0d6efd;
 }
 
-/* Forms */
 .form-label {
   font-weight: 600;
   color: #555;
@@ -303,7 +287,6 @@ main {
   color: #666;
 }
 
-/* Buttons */
 .btn {
   border-radius: 0.5rem;
   font-weight: 600;
@@ -317,7 +300,6 @@ main {
   border-color: #0b5ed7;
 }
 .btn-secondary {
-  /* Common for 'Kembali' and 'Reset' */
   background-color: #6c757d;
   border-color: #6c757d;
   color: white;
@@ -327,7 +309,6 @@ main {
   border-color: #545b62;
 }
 .btn-outline-secondary {
-  /* For 'Kembali' button style */
   color: #6c757d;
   border-color: #ced4da;
 }
@@ -352,7 +333,6 @@ main {
   border-color: #1e7e34;
 }
 .btn-warning {
-  /* For Absen Keluar button */
   background-color: #ffc107;
   border-color: #ffc107;
   color: #333;
@@ -362,13 +342,11 @@ main {
   border-color: #d39e00;
 }
 .btn-info {
-  /* For 'Lihat Dokumen' button */
   background-color: #17a2b8;
   border-color: #17a2b8;
   color: white;
 }
 
-/* Table Styling */
 .table {
   background-color: #ffffff;
   border-radius: 0.5rem;
@@ -386,7 +364,6 @@ main {
   font-weight: 600;
 }
 
-/* Status Badges (for pengajuan_izin_cuti) */
 .status-badge-pending {
   background-color: #ffc107;
   color: #333;
@@ -411,12 +388,10 @@ main {
   display: inline-block;
 }
 .bg-warning-custom {
-  /* Custom background for pending header in admin approval */
   background-color: #ffc107 !important;
   color: #333 !important;
 }
 
-/* Specific for isi_absensi.php */
 #jamSekarang {
   font-size: 1.8rem;
   font-weight: bold;
@@ -435,7 +410,6 @@ main {
   color: #0d6efd;
 }
 
-/* Login Page */
 .login-card {
   border-radius: 1rem;
   border: none;
@@ -459,7 +433,6 @@ main {
   margin-bottom: 10px;
 }
 
-/* Footer */
 footer {
   background-color: #f8f9fa;
   padding: 1rem 0;
@@ -470,13 +443,12 @@ footer {
   margin-top: auto;
 }
 
-/* Utilities / Small Text */
 .small-text {
   font-size: 0.85em;
   color: #666;
 }
 
-/* Mobile Responsiveness */
+
 @media (max-width: 768px) {
   .container {
     padding: 15px;
@@ -488,9 +460,8 @@ footer {
     border: 1px solid #dee2e6;
     border-radius: 0.5rem;
   }
-  /* Adjust specific elements for smaller screens */
+
   .d-flex.align-items-end.gap-2 {
-    /* For filter buttons stacking */
     flex-direction: column;
     align-items: stretch !important;
   }
@@ -498,7 +469,6 @@ footer {
     width: 100% !important;
   }
   .row.g-2.align-items-end {
-    /* For add employee form stacking */
     flex-direction: column;
   }
   .row.g-2.align-items-end .col-md,

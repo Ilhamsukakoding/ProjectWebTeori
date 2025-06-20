@@ -1,7 +1,4 @@
 <?php
-// includes/function.php
-// Pastikan includes/config.php sudah di-require di halaman utama
-// SEBELUM file ini di-require. Dengan begitu, variabel $conn sudah pasti ada.
 
 /**
  * Fungsi untuk mendapatkan status absensi karyawan pada hari ini.

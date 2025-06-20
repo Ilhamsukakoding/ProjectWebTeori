@@ -1,6 +1,4 @@
 <?php
-// includes/auth.php
-// Pastikan session_start() sudah dipanggil di includes/config.php
 
 if (!isset($_SESSION['username'])) {
     header("Location: ../login.php");
