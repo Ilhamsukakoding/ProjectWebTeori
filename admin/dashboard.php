@@ -1,6 +1,5 @@
 <?php
 // admin/dashboard.php
-// Pastikan session_start() ada di includes/config.php di baris PALING ATAS
 require '../includes/config.php';
 require '../includes/auth.php';
 require '../includes/function.php';
@@ -15,7 +14,6 @@ if (!is_admin()) {
     exit;
 }
 
-// Mengambil detail admin (nama) dari sesi atau DB jika diperlukan
 $admin_display_name = isset($_SESSION['nama_lengkap']) ? htmlspecialchars($_SESSION['nama_lengkap']) : htmlspecialchars($_SESSION['username']);
 
 ?>
@@ -34,7 +32,7 @@ $admin_display_name = isset($_SESSION['nama_lengkap']) ? htmlspecialchars($_SESS
 
 <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container d-flex justify-content-between align-items-center">
-        <a class="navbar-brand" href="dashboard.php"><i class="bi bi-speedometer2"></i> Admin Panel</a>
+        <a class="navbar-brand"><i class="bi bi-speedometer2"></i> Admin Panel</a>
         <div class="d-flex">
             <a href="../logout.php" class="btn btn-outline-dark btn-sm">
                 <i class="bi bi-box-arrow-right"></i> Logout

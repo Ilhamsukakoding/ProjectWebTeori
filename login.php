@@ -16,7 +16,7 @@ if (isset($_SESSION['username'])) {
             exit;
         }
     }
-    // Fallback jika role tidak ditemukan atau tidak sesuai, mungkin ke dashboard default atau logout
+    // Fallback jika role tidak ditemukan atau tidak sesuai, ke dashboard default
     header("Location: index.php"); 
     exit;
 }
