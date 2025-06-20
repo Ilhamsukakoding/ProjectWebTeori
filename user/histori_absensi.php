@@ -1,9 +1,18 @@
 <?php
+// user/histori_absensi.php
+// Pastikan session_start() ada di includes/config.php di baris PALING ATAS
 require '../includes/config.php';
 require '../includes/auth.php';
+require '../includes/function.php';
+
+// === PENTING: Mengontrol Cache Browser ===
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+// ==========================================
 
 if (!is_user()) {
-    header("Location: ../dashboard.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -16,165 +25,105 @@ $params = [$user_id];
 $types = 'i';
 
 if (!empty($tanggal_awal) && !empty($tanggal_akhir)) {
-    $query .= " AND tanggal BETWEEN ? AND ?";
-    $params[] = $tanggal_awal;
-    $params[] = $tanggal_akhir;
-    $types .= 'ss';
+    if (strtotime($tanggal_awal) && strtotime($tanggal_akhir) && $tanggal_awal <= $tanggal_akhir) {
+        $query .= " AND tanggal BETWEEN ? AND ?";
+        $params[] = $tanggal_awal;
+        $params[] = $tanggal_akhir;
+        $types .= 'ss';
+    } else {
+        $tanggal_awal = '';
+        $tanggal_akhir = '';
+    }
 }
 
 $query .= " ORDER BY tanggal DESC";
 
 $stmt = mysqli_prepare($conn, $query);
+if ($stmt === false) {
+    die("Error preparing statement: " . htmlspecialchars($conn->error));
+}
+
 mysqli_stmt_bind_param($stmt, $types, ...$params);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
+mysqli_stmt_close($stmt);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Histori Absensi</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap & Font -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-      color: #333;
-    }
-
-    .container {
-      max-width: 1000px;
-    }
-
-    h4 {
-      color: #0d6efd;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      border-radius: 0.5rem;
-    }
-
-    .btn-primary {
-      background-color: #0d6efd;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background-color: #0b5ed7;
-    }
-
-    .btn-secondary {
-      background-color: #6c757d;
-      color: white;
-      border: none;
-    }
-
-    .btn-secondary:hover {
-      background-color: #5a6268;
-    }
-
-    .card {
-      background-color: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 1rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
-    }
-
-    .form-control {
-      border-radius: 0.5rem;
-    }
-
-    .table {
-      background-color: #ffffff;
-      border-radius: 0.5rem;
-    }
-
-    .table th, .table td {
-      vertical-align: middle;
-    }
-
-    footer {
-      background-color: #f1f1f1;
-      text-align: center;
-      padding: 16px 0;
-      margin-top: auto;
-    }
-  </style>
-</head>
+    <meta charset="UTF-8">
+    <title>Riwayat Absensi - Karyawan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets/style.css" rel="stylesheet"> </head>
 <body>
-<div class="d-flex flex-column min-vh-100">
 
-  <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm">
-    <div class="container">
-      <a class="navbar-brand text-primary fw-bold" href="#">Histori Absensi</a>
-      <a href="dashboard.php" class="btn btn-secondary btn-sm">← Kembali</a>
+<div class="container">
+    <div class="mb-4 page-header">
+        <h4 class="text-primary"><i class="bi bi-list-columns-reverse"></i> Riwayat Absensi</h4>
+        <p class="text-muted">Lihat dan filter riwayat absensi Anda.</p>
     </div>
-  </nav>
 
-  <div class="container flex-grow-1 mt-5 pt-4">
-    <!-- Filter -->
+    <div class="mb-3">
+        <a href="dashboard.php" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
+        </a>
+    </div>
+
+    <div class="card p-4 mb-4">
+        <form class="row g-3" method="GET">
+            <div class="col-md-4">
+                <label for="tanggalAwal" class="form-label">Tanggal Awal</label>
+                <input type="date" name="awal" id="tanggalAwal" class="form-control" value="<?= htmlspecialchars($tanggal_awal) ?>">
+            </div>
+            <div class="col-md-4">
+                <label for="tanggalAkhir" class="form-label">Tanggal Akhir</label>
+                <input type="date" name="akhir" id="tanggalAkhir" class="form-control" value="<?= htmlspecialchars($tanggal_akhir) ?>">
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary w-50"><i class="bi bi-funnel-fill me-1"></i> Filter</button>
+                <a href="histori_absensi.php" class="btn btn-secondary w-50"><i class="bi bi-arrow-counterclockwise me-1"></i> Reset</a>
+            </div>
+        </form>
+    </div>
+
     <div class="card p-4">
-      <form class="row g-3" method="GET">
-        <div class="col-md-4">
-          <label class="form-label">Tanggal Awal</label>
-          <input type="date" name="awal" class="form-control" value="<?= htmlspecialchars($tanggal_awal) ?>" required>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Keluar</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (mysqli_num_rows($result) > 0): ?>
+                        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                            <tr>
+                                <td><?= date('d M Y', strtotime($row['tanggal'])) ?></td>
+                                <td><?= htmlspecialchars($row['jam_masuk'] ?? '-') ?></td>
+                                <td><?= htmlspecialchars($row['jam_keluar'] ?? '-') ?></td>
+                                <td><?= htmlspecialchars($row['keterangan']) ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4" class="text-center py-3">Tidak ada data absensi dalam rentang tanggal ini.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
-        <div class="col-md-4">
-          <label class="form-label">Tanggal Akhir</label>
-          <input type="date" name="akhir" class="form-control" value="<?= htmlspecialchars($tanggal_akhir) ?>" required>
-        </div>
-        <div class="col-md-4 d-flex align-items-end gap-2">
-          <button type="submit" class="btn btn-primary w-50">Filter</button>
-          <a href="histori_absensi.php" class="btn btn-secondary w-50">Reset</a>
-        </div>
-      </form>
     </div>
-
-    <!-- Tabel -->
-    <div class="card p-4">
-      <div class="table-responsive">
-        <table class="table table-striped mb-0">
-          <thead>
-            <tr>
-              <th>Tanggal</th>
-              <th>Jam Masuk</th>
-              <th>Jam Keluar</th>
-              <th>Keterangan</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (mysqli_num_rows($result) > 0): ?>
-              <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                <tr>
-                  <td><?= date('d-m-Y', strtotime($row['tanggal'])) ?></td>
-                  <td><?= $row['jam_masuk'] ?? '-' ?></td>
-                  <td><?= $row['jam_keluar'] ?? '-' ?></td>
-                  <td><?= htmlspecialchars($row['keterangan']) ?></td>
-                </tr>
-              <?php endwhile; ?>
-            <?php else: ?>
-              <tr>
-                <td colspan="4" class="text-center">Tidak ada data absensi.</td>
-              </tr>
-            <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <?php include '../includes/footer.php'; ?>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

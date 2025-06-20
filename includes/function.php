@@ -5,25 +5,23 @@
 
 /**
  * Fungsi untuk mendapatkan status absensi karyawan pada hari ini.
+ * Sekarang merujuk ke tabel 'user' yang baru.
  *
- * @param int $user_id ID user (asumsikan ini juga ID karyawan di tabel 'karyawan')
+ * @param int $user_id ID user (dari tabel 'user' gabungan)
  * @return array Array asosiatif berisi status, jam masuk, jam pulang, dan kemampuan checkout.
  */
 function get_today_attendance_status($user_id) {
-    global $conn; // Mengakses variabel koneksi global dari config.php
+    global $conn;
 
-    $today = date('Y-m-d'); // Tanggal hari ini dalam format YYYY-MM-DD
-
-    // Query untuk mencari absensi hari ini berdasarkan user_id dan tanggal
+    $today = date('Y-m-d');
     $stmt = $conn->prepare("SELECT jam_masuk, jam_keluar FROM absensi WHERE user_id = ? AND tanggal = ?");
     
-    // Periksa apakah prepare berhasil
     if ($stmt === false) {
         error_log("Failed to prepare get_today_attendance_status statement: " . $conn->error);
         return ['status' => 'error', 'message' => 'Database query preparation failed.'];
     }
 
-    $stmt->bind_param("is", $user_id, $today); // "i" for integer (user_id), "s" for string (today)
+    $stmt->bind_param("is", $user_id, $today);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -35,7 +33,6 @@ function get_today_attendance_status($user_id) {
 
     if ($row = $result->fetch_assoc()) {
         if (!empty($row['jam_keluar'])) {
-            // Sudah absen masuk dan absen keluar
             $status_data = [
                 'status' => 'pulang',
                 'time_in' => $row['jam_masuk'],
@@ -43,7 +40,6 @@ function get_today_attendance_status($user_id) {
                 'can_checkout' => false
             ];
         } else {
-            // Sudah absen masuk tapi belum absen keluar
             $status_data = [
                 'status' => 'masuk',
                 'time' => $row['jam_masuk'],
@@ -52,46 +48,47 @@ function get_today_attendance_status($user_id) {
         }
     }
     
-    $stmt->close(); // Tutup statement di sini
+    $stmt->close();
     return $status_data;
 }
 
 /**
- * Fungsi untuk mendapatkan nama karyawan berdasarkan user_id.
- * Berguna untuk menampilkan nama di dashboard.
+ * Fungsi untuk mendapatkan nama dan jabatan karyawan berdasarkan user_id.
+ * Sekarang merujuk ke tabel 'user' yang baru.
  *
- * @param int $user_id ID user (asumsi sama dengan ID di tabel karyawan)
- * @return string Nama karyawan atau 'Karyawan' jika tidak ditemukan.
+ * @param int $user_id ID user (dari tabel 'user' gabungan)
+ * @return array Array asosiatif berisi nama dan jabatan, atau default jika tidak ditemukan.
  */
-function get_karyawan_name($user_id) {
+function get_user_details($user_id) {
     global $conn;
     
-    $stmt = $conn->prepare("SELECT nama FROM karyawan WHERE id = ?");
+    $stmt = $conn->prepare("SELECT nama, jabatan FROM user WHERE id = ?"); // Mengacu ke tabel 'user'
     if ($stmt === false) {
-        error_log("Failed to prepare get_karyawan_name statement: " . $conn->error);
-        return "Karyawan";
+        error_log("Failed to prepare get_user_details statement: " . $conn->error);
+        return ['nama' => 'Karyawan', 'jabatan' => 'N/A'];
     }
 
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $karyawan_name = "Karyawan";
+    $details = ['nama' => 'Karyawan', 'jabatan' => 'N/A'];
     if ($row = $result->fetch_assoc()) {
-        $karyawan_name = htmlspecialchars($row['nama']);
+        $details['nama'] = htmlspecialchars($row['nama']);
+        $details['jabatan'] = htmlspecialchars($row['jabatan'] ?? 'N/A');
     }
     
-    $stmt->close(); // Tutup statement di sini
-    return $karyawan_name;
+    $stmt->close();
+    return $details;
 }
 
 /**
  * Fungsi untuk menyimpan pengajuan izin/cuti baru ke database.
  *
- * @param int $user_id ID karyawan yang mengajukan.
+ * @param int $user_id ID karyawan yang mengajukan (dari tabel 'user' gabungan).
  * @param string $jenis Jenis pengajuan ('izin' atau 'cuti').
- * @param string $tanggal_mulai Tanggal mulai pengajuan (format YYYY-MM-DD).
- * @param string $tanggal_akhir Tanggal berakhir pengajuan (format YYYY-MM-DD).
+ * @param string $tanggal_mulai Tanggal mulai pengajuan (format WERE-MM-DD).
+ * @param string $tanggal_akhir Tanggal berakhir pengajuan (format WERE-MM-DD).
  * @param string $alasan Alasan pengajuan.
  * @param string|null $dokumen_pendukung Path dokumen pendukung (opsional).
  * @return bool True jika berhasil, false jika gagal.
@@ -109,14 +106,14 @@ function submit_leave_request($user_id, $jenis, $tanggal_mulai, $tanggal_akhir, 
     $stmt->bind_param("isssss", $user_id, $jenis, $tanggal_mulai, $tanggal_akhir, $alasan, $dokumen_pendukung);
     
     $success = $stmt->execute();
-    $stmt->close(); // Tutup statement di sini
+    $stmt->close();
     return $success;
 }
 
 /**
  * Fungsi untuk mendapatkan semua riwayat pengajuan izin/cuti untuk karyawan tertentu.
  *
- * @param int $user_id ID karyawan.
+ * @param int $user_id ID karyawan (dari tabel 'user' gabungan).
  * @return array Array berisi semua data pengajuan.
  */
 function get_user_leave_requests($user_id) {
@@ -137,13 +134,13 @@ function get_user_leave_requests($user_id) {
     while ($row = $result->fetch_assoc()) {
         $requests[] = $row;
     }
-    $stmt->close(); // Tutup statement di sini
+    $stmt->close();
     return $requests;
 }
 
 /**
  * Fungsi untuk mendapatkan semua pengajuan izin/cuti dengan status 'pending'.
- * Menggabungkan dengan tabel karyawan untuk menampilkan nama pengaju.
+ * Menggabungkan dengan tabel 'user' yang baru untuk menampilkan nama dan jabatan pengaju.
  *
  * @return array Array berisi semua data pengajuan pending.
  */
@@ -151,19 +148,18 @@ function get_all_pending_leave_requests() {
     global $conn;
     $requests = [];
 
-    // Mengambil data pengajuan dan nama karyawan yang mengajukan
     $stmt = $conn->prepare("
         SELECT
             pic.*,
-            k.nama AS nama_karyawan,
-            k.jabatan AS jabatan_karyawan,
-            u.username AS admin_username -- Opsional, jika Anda ingin menampilkan username admin yang memproses
+            u.nama AS nama_karyawan,
+            u.jabatan AS jabatan_karyawan,
+            u_admin.username AS admin_username
         FROM
             pengajuan_izin_cuti pic
-        JOIN
-            karyawan k ON pic.user_id = k.id
         LEFT JOIN
-            user u ON pic.disetujui_oleh = u.id -- Join dengan tabel user untuk nama admin, jika disetujui_oleh merujuk ke user.id
+            user u ON pic.user_id = u.id -- JOIN ke tabel 'user' yang baru
+        LEFT JOIN
+            user u_admin ON pic.disetujui_oleh = u_admin.id -- JOIN ke tabel 'user' untuk admin
         WHERE
             pic.status = 'pending'
         ORDER BY
@@ -181,13 +177,13 @@ function get_all_pending_leave_requests() {
     while ($row = $result->fetch_assoc()) {
         $requests[] = $row;
     }
-    $stmt->close(); // Tutup statement di sini
+    $stmt->close();
     return $requests;
 }
 
 /**
  * Fungsi untuk mendapatkan semua riwayat pengajuan izin/cuti (baik pending, disetujui, maupun ditolak).
- * Berguna untuk admin melihat semua riwayat.
+ * Sekarang merujuk ke tabel 'user' yang baru.
  *
  * @return array Array berisi semua data pengajuan.
  */
@@ -198,15 +194,15 @@ function get_all_leave_requests_history() {
     $stmt = $conn->prepare("
         SELECT
             pic.*,
-            k.nama AS nama_karyawan,
-            k.jabatan AS jabatan_karyawan,
-            u.username AS admin_username
+            u.nama AS nama_karyawan,
+            u.jabatan AS jabatan_karyawan,
+            u_admin.username AS admin_username
         FROM
             pengajuan_izin_cuti pic
-        JOIN
-            karyawan k ON pic.user_id = k.id
         LEFT JOIN
-            user u ON pic.disetujui_oleh = u.id
+            user u ON pic.user_id = u.id -- JOIN ke tabel 'user' yang baru
+        LEFT JOIN
+            user u_admin ON pic.disetujui_oleh = u_admin.id -- JOIN ke tabel 'user' untuk admin
         ORDER BY
             pic.tanggal_pengajuan DESC
     ");
@@ -222,7 +218,7 @@ function get_all_leave_requests_history() {
     while ($row = $result->fetch_assoc()) {
         $requests[] = $row;
     }
-    $stmt->close(); // Tutup statement di sini
+    $stmt->close();
     return $requests;
 }
 
@@ -231,7 +227,7 @@ function get_all_leave_requests_history() {
  *
  * @param int $request_id ID pengajuan yang akan diupdate.
  * @param string $status Status baru ('disetujui' atau 'ditolak').
- * @param int $admin_id ID admin yang melakukan persetujuan/penolakan.
+ * @param int $admin_id ID admin yang melakukan persetujuan/penolakan (dari tabel 'user' gabungan).
  * @param string|null $catatan_admin Catatan tambahan dari admin (opsional).
  * @return bool True jika berhasil, false jika gagal.
  */
@@ -248,7 +244,7 @@ function update_leave_request_status($request_id, $status, $admin_id, $catatan_a
     $stmt->bind_param("sisi", $status, $admin_id, $catatan_admin, $request_id);
 
     $success = $stmt->execute();
-    $stmt->close(); // Tutup statement di sini
+    $stmt->close();
     return $success;
 }
 

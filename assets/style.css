@@ -1,0 +1,521 @@
+/* assets/style.css - Stylesheet Kustom Aplikasi Absensi */
+
+/* General Body & HTML/Basic Layout */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Inter", sans-serif; /* Menggunakan Google Font Inter */
+  background-color: #f8fafc; /* Latar belakang cerah */
+  color: #333; /* Warna teks gelap default */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Memastikan body memenuhi viewport tinggi */
+}
+
+/* Navbar (fixed-top for dashboard) */
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0.25rem 1rem; /* Padding yang lebih ringkas */
+  min-height: 50px; /* Tinggi minimum navbar */
+  z-index: 1000; /* Pastikan di atas konten lain */
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: #0d6efd !important;
+  font-size: 1.15rem; /* Ukuran font brand/logo */
+}
+
+/* Logout Button on Navbar */
+.btn-outline-dark {
+  border-color: #ced4da;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-outline-dark:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+/* Admin Navbar (using btn-outline-info as placeholder for dark theme) */
+.btn-outline-info {
+  border-color: #ced4da;
+  color: #333; /* Default text color, will be overridden by theme */
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  height: auto;
+  align-items: center;
+  gap: 5px;
+}
+.btn-outline-info:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+/* Admin Dashboard Specific Styles (from admin/dashboard.php original) */
+.navbar-dark .navbar-brand {
+  /* This was for a dark navbar, removed for consistency */
+  color: #0d6efd !important; /* Keep primary color */
+}
+.navbar-dark .btn-outline-info {
+  /* This was for a dark navbar, removed for consistency */
+  border-color: #0d6efd; /* Consistent blue */
+  color: #0d6efd;
+}
+.navbar-dark .btn-outline-info:hover {
+  /* Consistent blue */
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* Main Container & Page Headers */
+main {
+  flex: 1; /* Konten utama mengambil ruang sisa */
+  padding-top: 58px; /* Padding untuk fixed navbar */
+  padding-bottom: 40px; /* Padding bawah konten */
+}
+
+.container {
+  max-width: 1000px; /* Lebar default container */
+  flex-grow: 1; /* Agar container di dalam body flex mengisi ruang */
+}
+
+/* Specific for Admin Pages wider container */
+.container.admin-wide {
+  max-width: 1200px; /* Untuk admin absensi dan persetujuan */
+}
+
+/* Common Page Header */
+.page-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.page-header h4 {
+  font-weight: 700;
+  color: #0d6efd; /* Warna primary Bootstrap */
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+.page-header p {
+  color: #6c757d; /* Warna muted Bootstrap */
+  margin-bottom: 0;
+}
+.page-header .tanggal-info {
+  /* Styling untuk tanggal di header isi_absensi */
+  font-size: 1rem;
+  color: #555;
+  margin-top: -10px;
+  font-weight: 600;
+}
+
+/* Welcome Text (User Dashboard) */
+.welcome {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #212529;
+}
+.welcome strong {
+  color: #0d6efd;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  margin-bottom: 25px; /* Jarak bawah default untuk alert */
+}
+/* Specific info alert (user dashboard/absensi status) */
+.alert-info {
+  background-color: #e9f5ff;
+  color: #0d6efd;
+  border-color: #0d6efd;
+  font-weight: 500;
+}
+
+/* Info Card (User Dashboard) */
+.info-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+.info-card h4 {
+  font-weight: 600;
+  color: #0d6efd;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.info-card h4 i {
+  font-size: 1.5rem;
+}
+.info-card p {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Grid Menu (User & Admin Dashboards) */
+.grid-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 0px; /* Sesuaikan jarak jika perlu */
+}
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.menu-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 160px;
+}
+.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(13, 110, 253, 0.18);
+}
+.menu-card i {
+  font-size: 3.2rem;
+  color: #0d6efd;
+  display: block;
+  margin-bottom: 15px;
+}
+.menu-card h5 {
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+/* Announcement Section (User Dashboard) */
+.announcement-section {
+  background-color: #e9f5ff;
+  border-left: 5px solid #0d6efd;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+.announcement-section h6 {
+  font-weight: 600;
+  color: #0d6efd;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.announcement-section h6 i {
+  font-size: 1.1rem;
+}
+.announcement-section ul {
+  /* Removed for individual announcement-item */
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.announcement-item {
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: 1px solid #d0e7ff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+.announcement-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Common Card Styling (used across many pages) */
+.card {
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+  border: none;
+  margin-bottom: 20px; /* Default margin-bottom for cards */
+}
+.card-header {
+  background-color: #e9f2ff;
+  color: #0d6efd;
+  font-weight: 600;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #d0e4ff;
+  display: flex; /* For header with icons */
+  align-items: center;
+  gap: 10px;
+}
+.card-title {
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+/* Forms */
+.form-label {
+  font-weight: 600;
+  color: #555;
+}
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+  border: 1px solid #ced4da;
+}
+.form-control::placeholder {
+  color: #999;
+}
+.form-text {
+  font-size: 0.85em;
+  color: #666;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0b5ed7;
+}
+.btn-secondary {
+  /* Common for 'Kembali' and 'Reset' */
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+.btn-outline-secondary {
+  /* For 'Kembali' button style */
+  color: #6c757d;
+  border-color: #ced4da;
+}
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+.btn-warning {
+  /* For Absen Keluar button */
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #333;
+}
+.btn-warning:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+}
+.btn-info {
+  /* For 'Lihat Dokumen' button */
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: white;
+}
+
+/* Table Styling */
+.table {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+.table th,
+.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+.table thead {
+  background-color: #e9f2ff;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+/* Status Badges (for pengajuan_izin_cuti) */
+.status-badge-pending {
+  background-color: #ffc107;
+  color: #333;
+}
+.status-badge-disetujui {
+  background-color: #28a745;
+  color: #fff;
+}
+.status-badge-ditolak {
+  background-color: #dc3545;
+  color: #fff;
+}
+.status-badge {
+  padding: 0.3em 0.6em;
+  border-radius: 0.3rem;
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  display: inline-block;
+}
+.bg-warning-custom {
+  /* Custom background for pending header in admin approval */
+  background-color: #ffc107 !important;
+  color: #333 !important;
+}
+
+/* Specific for isi_absensi.php */
+#jamSekarang {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0d6efd;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.absen-info {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.absen-info strong {
+  color: #0d6efd;
+}
+
+/* Login Page */
+.login-card {
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+  background-color: #ffffff;
+}
+.login-header h4 {
+  font-weight: 600;
+  color: #0d6efd;
+}
+.logo-circle {
+  background-color: #0d6efd;
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+  color: #6c757d;
+  margin-top: auto;
+}
+
+/* Utilities / Small Text */
+.small-text {
+  font-size: 0.85em;
+  color: #666;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  .page-header h4 {
+    font-size: 1.5rem;
+  }
+  .table-responsive {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+  }
+  /* Adjust specific elements for smaller screens */
+  .d-flex.align-items-end.gap-2 {
+    /* For filter buttons stacking */
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .d-flex.align-items-end.gap-2 .btn {
+    width: 100% !important;
+  }
+  .row.g-2.align-items-end {
+    /* For add employee form stacking */
+    flex-direction: column;
+  }
+  .row.g-2.align-items-end .col-md,
+  .row.g-2.align-items-end .col-auto {
+    width: 100%;
+  }
+  .row.g-2.align-items-end .btn {
+    margin-top: 10px;
+  }
+  /* Dashboard specific */
+  .grid-menu {
+    grid-template-columns: 1fr;
+  }
+  .welcome {
+    font-size: 1.5rem;
+  }
+  .info-card {
+    padding: 20px;
+  }
+}

@@ -1,11 +1,18 @@
-
 <?php
+// user/pengajuan_izin_cuti.php
+// Pastikan session_start() ada di includes/config.php di baris PALING ATAS
 require '../includes/config.php';
 require '../includes/auth.php';
 require '../includes/function.php';
 
+// === PENTING: Mengontrol Cache Browser ===
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+// ==========================================
+
 if (!is_user()) {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -15,17 +22,23 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-
-$nama_karyawan = get_karyawan_name($user_id); // Untuk display di navbar atau welcome
+$user_details = get_user_details($user_id); // Mengambil detail user dari tabel 'user' baru
+$nama_karyawan = $user_details['nama']; // Untuk display (jika dibutuhkan, tapi di sini tidak digunakan langsung)
 
 $message = '';
-$message_type = ''; // 'success' atau 'danger'
+$message_type = '';
+
+// Ambil pesan dari URL jika ada (setelah redirect dari proses POST)
+if (isset($_GET['msg']) && isset($_GET['type'])) {
+    $message = htmlspecialchars($_GET['msg']);
+    $message_type = htmlspecialchars($_GET['type']);
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $jenis_pengajuan = $_POST['jenis_pengajuan'] ?? '';
     $tanggal_mulai = $_POST['tanggal_mulai'] ?? '';
     $tanggal_akhir = $_POST['tanggal_akhir'] ?? '';
-    $alasan = $_POST['alasan'] ?? '';
+    $alasan = trim($_POST['alasan'] ?? ''); // Perbaikan deprecated trim()
     $dokumen_pendukung = null;
 
     // Validasi input
@@ -42,14 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $max_size = 5 * 1024 * 1024; // 5 MB
             $upload_dir = '../uploads/izin_cuti/'; // Pastikan folder ini ada dan writable!
             
-            // Buat folder jika belum ada
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
 
-            $file_name = uniqid('doc_') . '_' . basename($_FILES['dokumen_pendukung']['name']);
-            $target_file = $upload_dir . $file_name;
-            $file_type = mime_content_type($_FILES['dokumen_pendukung']['tmp_name']);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_type = finfo_file($finfo, $_FILES['dokumen_pendukung']['tmp_name']);
+            finfo_close($finfo);
 
             if (!in_array($file_type, $allowed_types)) {
                 $message = "Format file tidak diizinkan. Hanya PDF, JPG, PNG.";
@@ -58,6 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $message = "Ukuran file terlalu besar (maks 5MB).";
                 $message_type = "danger";
             } else {
+                $file_extension = pathinfo($_FILES['dokumen_pendukung']['name'], PATHINFO_EXTENSION);
+                $file_name = uniqid('doc_') . '.' . $file_extension;
+                $target_file = $upload_dir . $file_name;
+
                 if (move_uploaded_file($_FILES['dokumen_pendukung']['tmp_name'], $target_file)) {
                     $dokumen_pendukung = $file_name;
                 } else {
@@ -67,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        // Jika tidak ada error upload atau upload tidak dilakukan
         if ($message_type !== "danger") {
             if (submit_leave_request($user_id, $jenis_pengajuan, $tanggal_mulai, $tanggal_akhir, $alasan, $dokumen_pendukung)) {
                 $message = "Pengajuan berhasil dikirim! Menunggu persetujuan admin.";
@@ -78,9 +93,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
     }
+    header("Location: pengajuan_izin_cuti.php?msg=".urlencode($message)."&type=".urlencode($message_type));
+    exit;
 }
 
-// Ambil riwayat pengajuan untuk ditampilkan
 $riwayat_pengajuan = get_user_leave_requests($user_id);
 
 ?>
@@ -94,148 +110,20 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #333;
-            margin: 0;
-        }
-       /* NAVBAR - versi ramping & cerah */
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            padding: 0.3rem 0.8rem; 
-            height: 90px;
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar-brand {
-            font-weight: 600;
-            color: #0d6efd !important;
-            font-size: 1.1rem;
-            line-height: 1;
-            margin: 0;
-            padding-top: 0.2rem;
-        }
-
-
-
-        .btn-outline-dark {
-            font-size: 0.8rem;
-            font-weight: 500;
-            padding: 0.3rem 0.8rem;
-            border-radius: 0.4rem;
-            border-color: #ced4da;
-            color: #333;
-            display: flex;
-            align-items: center;
-        }
-
-
-        .btn-outline-dark:hover {
-        background-color: #0d6efd;
-        color: #fff;
-        border-color: #0d6efd;
-        }
-
-        .container {
-            max-width: 1000px;
-            padding-top: 100px;
-            padding-bottom: 40px;
-        }
-        h2 {
-            color: #0d6efd;
-            font-weight: 700;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border: 1px solid #e9ecef;
-            margin-bottom: 30px;
-        }
-        .card-header {
-            background-color: #0d6efd;
-            color: #fff;
-            font-weight: 600;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-            padding: 1rem 1.5rem;
-        }
-        .form-label {
-            font-weight: 600;
-            color: #555;
-        }
-        .btn-primary {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
-            font-weight: 600;
-        }
-        .btn-primary:hover {
-            background-color: #0b5ed7;
-            border-color: #0b5ed7;
-        }
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-        .table-hover tbody tr:hover {
-            background-color: rgba(13, 110, 253, 0.05);
-        }
-        .status-badge-pending { background-color: #ffc107; color: #333; }
-        .status-badge-disetujui { background-color: #28a745; color: #fff; }
-        .status-badge-ditolak { background-color: #dc3545; color: #fff; }
-        .status-badge {
-            padding: 0.3em 0.6em;
-            border-radius: 0.3rem;
-            font-size: 0.85em;
-            font-weight: 600;
-            line-height: 1;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            display: inline-block;
-        }
-
-        .small-text {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        
-    </style>
-</head>
+    <link href="../assets/style.css" rel="stylesheet"> </head>
 <body>
 
-<nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container d-flex justify-content-between align-items-center">
-        <a class="navbar-brand" href="dashboard.php">Absensi Karyawan</a>
-        <a href="../logout.php" class="btn btn-outline-dark btn-sm">
-            <i class="bi bi-box-arrow-right"></i> Logout
+<div class="container">
+    <div class="mb-4 page-header">
+        <h4 class="text-primary"><i class="bi bi-file-earmark-text"></i> Pengajuan Izin / Cuti</h4>
+        <p class="text-muted">Ajukan permohonan izin atau cuti Anda di sini.</p>
+    </div>
+
+    <div class="mb-3">
+        <a href="dashboard.php" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Kembali ke Dashboard
         </a>
     </div>
-</nav>
-
-
-
-<div class="container">
-    <h2><i class="bi bi-file-earmark-text"></i> Pengajuan Izin / Cuti</h2>
-
-    <a href="dashboard.php" class="btn btn-secondary btn-sm mb-4">
-        <i class="bi bi-arrow-left"></i> Kembali
-    </a>
 
     <?php if ($message): ?>
         <div class="alert alert-<?= $message_type ?> alert-dismissible fade show" role="alert">
@@ -293,7 +181,7 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
                 </div>
             <?php else: ?>
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -344,11 +232,8 @@ $riwayat_pengajuan = get_user_leave_requests($user_id);
 
 </div>
 
-<?php include '../includes/footer.php'; ?>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Inisialisasi Tooltip Bootstrap
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl)
